@@ -14,7 +14,7 @@ exports.createTestimonial = async (req, res) => {
 
 exports.getAllTestimonials = async (req, res) => {
   try {
-    const { user, startDate, endDate, access } = req.query;
+    const { user, startDate, endDate, access , userTestimonial } = req.query;
 
     // Construire dynamiquement les filtres
     let filter = {};
