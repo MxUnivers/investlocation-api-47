@@ -17,19 +17,19 @@ const port = process.env.PORT || 8080;
 app.use(cors({ origin: "*" }));
 
 const allowedOrigins = [
-  'https://investlocation-app.web.app', 
+  'https://investlocation-app.web.app',
   'http://localhost:3000'
 ];
 
 // Middleware CORS
 app.use(cors({
   origin: (origin, callback) => {
-      // Si l'origine est dans la liste autorisée ou si elle est absente (par ex. outils comme Postman)
-      if (!origin || allowedOrigins.includes(origin)) {
-          callback(null, true);
-      } else {
-          callback(new Error('Not allowed by CORS'));
-      }
+    // Si l'origine est dans la liste autorisée ou si elle est absente (par ex. outils comme Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
   }
 }));
 

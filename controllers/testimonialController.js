@@ -4,20 +4,56 @@ exports.createTestimonial = async (req, res) => {
   try {
     const testimonial = new Testimonial(req.body);
     await testimonial.save();
-    return res.status(201).json({ data: testimonial, message: "Nouveau témoignage créée avec succès" });
+    return res.status(201).json({ data: testimonial, message: "Nouveau commentaire envoyer avec succès" });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
 };
 
-exports.getAllCategories = async (req, res) => {
+
+
+exports.getAllTestimonials = async (req, res) => {
   try {
-    const testimonials = await Testimonial.find();
-    return res.status(200).json({ data: testimonials, message: "Toutes les témoignages récupérées avec succès" });
+    const { user, startDate, endDate, access } = req.query;
+
+    // Construire dynamiquement les filtres
+    let filter = {};
+
+
+    if (user) {
+      filter.user = user; // Filtrer par utilisateur
+    }
+    if(userTestimonial){
+      filter.userTestimonial = userTestimonial;
+    }
+
+    if (access !== undefined) {
+      filter.access = access === 'true'; // Convertir string "true"/"false" en boolean
+    }
+
+    if (startDate || endDate) {
+      filter.createdAt = {};
+      if (startDate) {
+        filter.createdAt.$gte = new Date(startDate); // Filtrer par date de début
+      }
+      if (endDate) {
+        filter.createdAt.$lte = new Date(endDate); // Filtrer par date de fin
+      }
+    }
+
+    // Rechercher avec les filtres
+    const testimonials = await Testimonial.find(filter).populate('user');
+
+    return res.status(200).json({
+      data: testimonials,
+      message: "Les témoignages ont été récupérés avec succès.",
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
 
 exports.getTestimonialById = async (req, res) => {
   try {

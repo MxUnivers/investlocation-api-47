@@ -2,14 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const testimonialSchema = new Schema({
-    
-    name: { type: String, required: false },
-    profession: { type: String, required: false },
-    company: { type: String, required: false },
-    description: {type:String},
-    coverPicture:{type:String}
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
+    content: { type: String, required: false },
+    description: { type: String },
+    coverPicture: { type: String },
+    access: { type: Boolean, default: true },
 
-},{timestamps:true});
+}, { timestamps: true });
 
 const Testimonial = mongoose.model('Testimonial', testimonialSchema);
 

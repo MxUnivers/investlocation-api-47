@@ -11,12 +11,12 @@ const UserSchema = new mongoose.Schema(
         email: { type: String, required: false },
         phone: { type: String, required: false },
         description:{type:String, required:false},
-
+        
         // Informations d'adresse
         codePostal: { type: mongoose.Schema.Types.ObjectId, ref: 'CodePostal', required: false },
         category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: false },
         region: { type: mongoose.Schema.Types.ObjectId, ref: 'Region', required: false },
-        
+
         address: { type: String, required: false },
         addressPostal: { type: String, required: false },
         companyAddress: { type: String },
@@ -46,6 +46,7 @@ const UserSchema = new mongoose.Schema(
 
         // Autres informations
         conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'conversations' }],
+        
         rating: { type: Number, default: 1 },
         online: { type: Boolean, default: false },
         lastSeen: { type: Date, default: Date.now },

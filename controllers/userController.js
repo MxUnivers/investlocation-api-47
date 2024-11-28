@@ -189,7 +189,7 @@ exports.getAllClients = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById({ _id: req.params.id });
+    const user = await User.findById({ _id: req.params.id }).populate("codePostal").populate("category").populate("region");
     if (!user) {
       return res.status(404).send({ error: 'User non trouvé' });
     }
