@@ -74,8 +74,9 @@ const UploadFile = require("./utils/FileUpload");
 // Import des routes
 const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');
-const agendaRoutes = require('./routes/agendaRoutes');
 const codepostalRoutes = require('./routes/codepostalRoutes');
+const regionRoutes = require('./routes/regionsRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 const placeGoogleRoutes = require('./routes/placeGoogleRoutes');
 
@@ -116,9 +117,12 @@ app.get("/", (req, res) => {
 
 // Utilisation des routes
 app.use('/api/v1/users', userRoutes);
-app.use('/api/v1/agendas', agendaRoutes);
 app.use('/api/v1/codepostals', codepostalRoutes);
 //
+app.use('/api/v1/categorys', categoryRoutes);
+
+app.use('/api/v1/regions', regionRoutes);
+
 app.use('/api/v1/places', placeGoogleRoutes);
 //
 app.use('/api/v1/notifications', notificationRoutes);

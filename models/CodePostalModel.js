@@ -22,12 +22,12 @@ const CodePostal = mongoose.model('CodePostal', CodePostalSchema);
 
 // Liste des codes postaux et indicatifs pour différents pays
 const codePostals = [
-    // { indicatif: '225', country: 'Côte d\'Ivoire', description: 'Code postal Côte d\'Ivoire' },
+     { indicatif: '225', country: 'Côte d\'Ivoire', description: 'Code postal Côte d\'Ivoire' },
     { indicatif: '213', country: 'Algérie', description: 'Code postal Algérie' },
-    // { indicatif: '33', country: 'France', description: 'Code postal France' },
-    // { indicatif: '1', country: 'États-Unis', description: 'Code postal États-Unis' },
-    // { indicatif: '44', country: 'Royaume-Uni', description: 'Code postal Royaume-Uni' },
-    // { indicatif: '81', country: 'Japon', description: 'Code postal Japon' }
+    { indicatif: '33', country: 'France', description: 'Code postal France' },
+    { indicatif: '1', country: 'États-Unis', description: 'Code postal États-Unis' },
+    { indicatif: '44', country: 'Royaume-Uni', description: 'Code postal Royaume-Uni' },
+    { indicatif: '81', country: 'Japon', description: 'Code postal Japon' }
 ];
 
 // Fonction pour vérifier l'existence d'un code postal

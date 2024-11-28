@@ -41,10 +41,6 @@ exports.registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
 
-    const customerExist = await Customer.findOne({ email, phone });
-    if (customerExist) {
-      return res.status(450).json({ message: `${email} et ${phone}  est déja utilisé par autre compte` });
-    }
 
     const userExist = await User.findOne({ email, phone });
     if (userExist) {
@@ -57,7 +53,7 @@ exports.registerUser = async (req, res) => {
 
     await user.save();
 
-    
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '48h' });
     return res.status(201).json({ data: user, token, message: "User créé avec succès" });
   } catch (error) {
@@ -74,47 +70,44 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Chercher l'utilisateur dans User et Customer
+    // Recherche de l'utilisateur dans la base de données
     const user = await User.findOne({ email });
-    const customer = await Customer.findOne({ email });
 
-    // Si l'utilisateur existe dans la collection User
-    if (user) {
-      if (user.status !== "Active") {
-        return res.status(451).json({ message: 'Compte bloqué pour le moment' });
-      }
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.status(452).json({ message: 'Mot de passe non valide' });
-      }
-
-      // Générer un token pour User
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '48h' });
-      return res.status(200).json({ data: user, role: "USER", token, message: "Connexion réussie" });
+    // Vérification si l'utilisateur existe
+    if (!user) {
+      return res.status(404).json({ message: "Compte introuvable." });
     }
 
-    // Si l'utilisateur n'existe pas dans User mais existe dans Customer
-    if (customer) {
-      const isMatch = await bcrypt.compare(password, customer.password);
-      if (!isMatch) {
-        return res.status(452).json({ message: 'Mot de passe non valide' });
-      }
-
-      // Générer un token pour Customer
-      const token = jwt.sign({ id: customer._id }, process.env.JWT_SECRET, { expiresIn: '48h' });
-      return res.status(200).json({ data: customer, role: "CUSTOMER", token, message: "Connexion réussie" });
+    // Vérification de l'état du compte
+    if (user.status !== "Active") {
+      return res.status(403).json({ message: "Votre compte est actuellement bloqué." });
     }
 
-    // Si l'utilisateur n'existe dans aucune des deux collections
-    return res.status(450).json({ message: 'Compte introuvable' });
+    // Vérification du mot de passe
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Mot de passe incorrect." });
+    }
 
+    // Génération du token JWT
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '48h' } // Durée d'expiration du token
+    );
+
+    // Réponse de succès avec les données utilisateur et le token
+    return res.status(200).json({
+      message: "Connexion réussie.",
+      data: user,
+      token,
+    });
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ message: "Connexion impossible" });
+    // Gestion des erreurs du serveur
+    console.error("Erreur lors de la connexion :", error.message);
+    return res.status(500).json({ message: "Une erreur est survenue. Veuillez réessayer plus tard." });
   }
 };
-
-
 
 
 
@@ -162,7 +155,8 @@ exports.blockUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}).populate("codePostal")
+    const users = await User.find({}).populate("codePostal").populate("category").populate("region");
+
     return res.status(200).json({ data: users.reverse(), message: "Tous les users" });
   } catch (error) {
     console.log(error.message)
@@ -287,8 +281,8 @@ exports.resetPasswordUser = async (req, res) => {
     await userExist.save();
 
     // Réponse au client
-    return res.status(200).json({ 
-      message: "Mise à jour du mot de passe effectuée avec succès.", 
+    return res.status(200).json({
+      message: "Mise à jour du mot de passe effectuée avec succès.",
       data: { email: userExist.email || userExist.phone }
     });
   } catch (error) {
@@ -316,13 +310,13 @@ exports.sendCodeResetUser = async (req, res) => {
     console.log('Email:', email,);
 
     // Recherche dans User et Customer
-    const userExist = await User.findOne({ email:email });
-    const customerExist = await Customer.findOne({ email:email });
-    console.log(userExist , customerExist)
+    const userExist = await User.findOne({ email: email });
+    const customerExist = await Customer.findOne({ email: email });
+    console.log(userExist, customerExist)
 
     // Si aucun compte n'existe
     if (!userExist && !customerExist) {
-      
+
       return res.status(450).json({ message: `Aucun compte avec l'email ${email} n'a été trouvé.` });
     }
 
@@ -363,7 +357,7 @@ exports.sendCodeResetUser = async (req, res) => {
     `;
 
     // Envoi de l'email (supposant que vous avez une fonction pour cela)
-    await sendEmail(ApplicationInfo.emailApplication, ApplicationInfo.passwordEmail,targetUser?.email,`Code de vérification `, htmlContent);
+    await sendEmail(ApplicationInfo.emailApplication, ApplicationInfo.passwordEmail, targetUser?.email, `Code de vérification `, htmlContent);
 
     return res.status(200).json({ message: 'Code de vérification envoyé avec succès.', code: codeRandom });
   } catch (error) {

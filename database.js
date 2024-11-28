@@ -5,6 +5,8 @@ const XLSX = require("xlsx");
 const path = require("path");
 const { createCodePostals } = require("./models/CodePostalModel");
 const Admin = require("./models/AdminModel");
+const { fetchCreatedCategorys } = require("./models/CategoryModel");
+const { addRegions } = require("./models/RegionModel");
 
 dotenv.config();
 
@@ -78,6 +80,9 @@ async function initializeData() {
   try {
     await connectDB();
     await createCodePostals();
+    await fetchCreatedCategorys();
+    await addRegions();
+
 
     //console.log('Données initialisées avec succès.');
   } catch (error) {
