@@ -31,7 +31,7 @@ const fetchCreatedCategorys = async () => {
         {
             name: "Construction et Immobilier",
             description: "Développement immobilier, architecture, construction de bâtiments, et gestion de propriétés.",
-            coverPicture: "https://example.com/images/construction.jpg"
+            coverPicture: "https://img.freepik.com/free-photo/young-black-race-man-with-blueprint-stading-near-glass-building_1157-50906.jpg?t=st=1732860285~exp=1732863885~hmac=9c19dac47af21297bb8c9a3030bae544d39f8b1cb90ecb49e11310d89c3b78e6&w=996"
         },
         {
             name: "Commerce et Distribution",
