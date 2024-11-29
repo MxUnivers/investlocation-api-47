@@ -77,6 +77,7 @@ const chatRoutes = require('./routes/chatRoutes');
 const codepostalRoutes = require('./routes/codepostalRoutes');
 const regionRoutes = require('./routes/regionsRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const testmimonialRoutes = require('./routes/testmimonialRoutes');
 
 const placeGoogleRoutes = require('./routes/placeGoogleRoutes');
 
@@ -122,6 +123,7 @@ app.use('/api/v1/codepostals', codepostalRoutes);
 app.use('/api/v1/categorys', categoryRoutes);
 
 app.use('/api/v1/regions', regionRoutes);
+app.use('/api/v1/testimonials', testmimonialRoutes);
 
 app.use('/api/v1/places', placeGoogleRoutes);
 //

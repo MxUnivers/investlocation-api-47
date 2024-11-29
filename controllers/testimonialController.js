@@ -6,7 +6,8 @@ exports.createTestimonial = async (req, res) => {
     await testimonial.save();
     return res.status(201).json({ data: testimonial, message: "Nouveau commentaire envoyer avec succès" });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    console.log(error.message)
+    return res.status(400).json({ message: "Commentaire non posté" });
   }
 };
 
@@ -14,21 +15,13 @@ exports.createTestimonial = async (req, res) => {
 
 exports.getAllTestimonials = async (req, res) => {
   try {
-    const { user, startDate, endDate, access , userTestimonial } = req.query;
+    const { startDate, endDate, user, access, userTestimonial } = req.query;
 
     // Construire dynamiquement les filtres
     let filter = {};
 
-
-    if (user) {
-      filter.user = user; // Filtrer par utilisateur
-    }
-    if(userTestimonial){
-      filter.userTestimonial = userTestimonial;
-    }
-
-    if (access !== undefined) {
-      filter.access = access === 'true'; // Convertir string "true"/"false" en boolean
+    if (access ) {
+      filter.access = access ; // Convertir string "true"/"false" en boolean
     }
 
     if (startDate || endDate) {
@@ -39,6 +32,13 @@ exports.getAllTestimonials = async (req, res) => {
       if (endDate) {
         filter.createdAt.$lte = new Date(endDate); // Filtrer par date de fin
       }
+    }
+
+    if (user) {
+      filter.user = user; // Filtrer par utilisateur
+    }
+    if (userTestimonial) {
+      filter.userTestimonial = userTestimonial;
     }
 
     // Rechercher avec les filtres
