@@ -42,7 +42,7 @@ const UserSchema = new mongoose.Schema(
         passwordverifield: { type: String, required: false },
 
         // Statut utilisateur
-        status: { type: String, enum: ['Active', 'Blocked'], default: 'Blocked' },
+        status: { type: String, enum: ['Active', 'Blocked'], default: 'Active' },
 
         // Autres informations
         conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'conversations' }],
