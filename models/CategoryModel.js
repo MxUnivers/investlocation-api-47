@@ -36,7 +36,7 @@ const fetchCreatedCategorys = async () => {
         {
             name: "Commerce et Distribution",
             description: "Commerce de détail, gros, e-commerce, et chaînes d'approvisionnement.",
-            coverPicture: "https://img.freepik.com/free-photo/young-black-race-man-with-blueprint-stading-near-glass-building_1157-50906.jpg?t=st=1732859363~exp=1732862963~hmac=57c0e501eeec0aaa860a323412c43f8e4a8a12bf281b4d33a611f31f78d1baf8&w=996"
+            coverPicture: "https://img.freepik.com/free-photo/medium-shot-man-repairing-fashion-goods_23-2150627989.jpg?t=st=1732862568~exp=1732866168~hmac=705643957fb15e4a0204658f51c4370c185a3bc34fcf27be2c3adb909c830b4f&w=996"
         },
         {
             name: "Agriculture et Agroalimentaire",
